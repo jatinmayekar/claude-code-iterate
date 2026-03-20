@@ -43,7 +43,12 @@ Evaluate the output against **every** success criterion independently. For each 
 [PASS] or [FAIL] — criterion text — one-sentence evidence
 ```
 
-Be honest. If something barely passes, say so. Do not rubber-stamp your own work.
+**Verification rules:**
+- Do NOT evaluate from memory. Actually inspect the output — read the file, run the code, check the result.
+- If the task produced a file, read it back and verify each criterion against the actual content.
+- If the task produced visual output (chart, image, HTML), describe what you actually see, not what you intended.
+- Be honest. If something barely passes, say so. Do not rubber-stamp your own work.
+- Common self-evaluation failures: overlapping text, raw numbers instead of formatted, wrong positioning — check for these.
 
 ### C — DECIDE
 
