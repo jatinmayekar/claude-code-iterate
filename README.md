@@ -75,6 +75,23 @@ Claude infers success criteria and asks you to confirm before starting.
 - **Targeted fixes only** — After iteration 1, only fixes what's broken. Doesn't redo passing work
 - **Honest self-evaluation** — Won't rubber-stamp its own output
 
+### Tested
+
+16 tests across code generation, charts, HTML landing pages, PowerPoint presentations, React components, SVG diagrams, algorithms, and [BigCodeBench-Hard](https://huggingface.co/datasets/bigcode/bigcodebench-hard) benchmark tasks. Tested with Opus, Sonnet, and Haiku (including low-effort mode).
+
+**Self-correction in action:**
+
+| Test | What happened | How iterate helped |
+|------|--------------|-------------------|
+| SQL Builder | Invalid import on iteration 1 | Caught error, fixed on iteration 2 |
+| K-Means (BigCodeBench/92) | sklearn unavailable | Reimplemented K-means from scratch using numpy |
+| Orbital Mechanics | Assertion tolerance too tight | Verified physics was correct, diagnosed test spec issue |
+| Contradictory Criteria | `return 42` and `return 99` both required | Creative solution using file-based state |
+
+**Bug found during testing:** The evaluation step was too weak — Haiku rubber-stamped its own output. Fixed by adding verification rules (read files back, run code, inspect actual output instead of evaluating from memory).
+
+Full results: [`tests/TEST_RESULTS.md`](tests/TEST_RESULTS.md)
+
 ### Output
 
 ```
