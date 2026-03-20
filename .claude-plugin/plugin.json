@@ -1,0 +1,10 @@
+{
+  "name": "iterate",
+  "description": "Self-correcting agentic loop: work, evaluate, iterate, done. Claude retries until success criteria are met.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Jatin Mayekar",
+    "url": "https://github.com/jatinmayekar"
+  },
+  "license": "MIT"
+}
