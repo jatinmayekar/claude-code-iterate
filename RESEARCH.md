@@ -119,6 +119,47 @@ The value is NOT in making single-pass outputs better. It's in two specific scen
 - Well-defined tasks — even Haiku nails these in one shot
 - Output quality on subjective criteria — raw single-shot produces equal or richer output
 
+## The Pivot: Fix the Prompt, Not the Output
+
+### Key insight
+
+Our testing proved that **output iteration** (execute → self-evaluate → retry) adds minimal value. What actually worked was **input improvement** — requirements discovery (auto-infer) and forced verification. This suggests the skill should pivot from iterating on outputs to enhancing inputs.
+
+### What already exists
+
+Prompt optimization tools exist but none are packaged as Claude Code skills:
+
+- [Anthropic's Prompt Generator](https://docs.anthropic.com/en/docs/prompt-generator) — metaprompt that rewrites prompts following best practices (chain-of-thought, XML tags, structured output)
+- [DSPy](https://dspy.ai/) (Stanford) — treats prompts as code, auto-optimizes with hill-climbing. Philosophy: "programming, not prompting"
+- [Meta's prompt-ops](https://github.com/meta-llama/prompt-ops) — open-source prompt optimization CLI
+- [Evidently](https://www.evidentlyai.com/blog/automated-prompt-optimization) — raised accuracy from 64% to 96% with automatic prompt rewriting
+- [PromptPerfect](https://promptperfect.jina.ai/) — paste any prompt, get it rewritten for target model
+
+### The gap
+
+None of these are Claude Code skills. Nobody has packaged prompt enhancement + requirements discovery + verification enforcement into a single reusable skill that works inside the Claude Code workflow.
+
+### Proposed direction
+
+Instead of:
+> "Execute → self-evaluate → retry" (output iteration — didn't add value in testing)
+
+The skill should do:
+> "Enhance prompt → discover requirements → execute → verify" (input improvement + verification)
+
+This combines:
+1. **Prompt rewriting** — apply Anthropic's prompt engineering techniques (chain-of-thought, structured output, specificity) to the user's vague input
+2. **Requirements discovery** — the auto-infer feature that actually worked in our testing (Tests 23, 27)
+3. **Verification enforcement** — the forced evaluation step that caught real failures (Tests 8, 14, 21)
+4. **Failure recovery** — if verification fails, diagnose and fix (the iterate loop, but only when actually needed)
+
+### Supporting research
+
+- DSPy's core thesis: "Treat prompts as code" ([arxiv 2025](https://arxiv.org/html/2507.03620v1)) — optimize the input programmatically, don't hand-tune outputs
+- Evidently showed prompt optimization alone raised accuracy 64% → 96% — no output iteration needed
+- Yang et al. (2025): "requirements-aware prompt optimization improves performance by 4.8% over baselines"
+- Our own data: auto-infer (input improvement) worked; output iteration on vague criteria did not
+
 ## References
 
 1. Yang, C. et al. (2025). "What Prompts Don't Say: Understanding and Managing Underspecification in LLM Prompts." [arXiv:2505.13360](https://arxiv.org/abs/2505.13360)
