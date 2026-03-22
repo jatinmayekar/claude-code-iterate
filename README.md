@@ -32,6 +32,21 @@ claude --plugin-dir /path/to/claude-code-iterate
 
 ## Usage
 
+### `/enhance` — Fix the prompt before execution
+
+```
+/enhance <vague task description>
+```
+
+Takes your vague prompt, identifies what's missing, rewrites it into a structured spec with testable criteria, and asks for confirmation before executing. Best for when you know *what* you want but not *how to ask for it*.
+
+```
+/enhance build me a sales dashboard
+```
+→ Finds 6 gaps (no metrics, no design spec, no data, ...) → generates 7 testable criteria → asks to confirm → executes → verifies.
+
+### `/iterate` — Self-correct the output after execution
+
 ```
 /iterate <task> | <criteria, comma-separated> [| max:<N>]
 ```

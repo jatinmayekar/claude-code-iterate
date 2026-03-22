@@ -181,6 +181,30 @@ This combines:
 - Yang et al. (2025): "requirements-aware prompt optimization improves performance by 4.8% over baselines"
 - Our own data: auto-infer (input improvement) worked; output iteration on vague criteria did not
 
+## `/enhance` Skill — Test Results
+
+We built `/enhance` and tested with the same 3 vague prompts (Haiku + low effort):
+
+| Vague Prompt | Issues Found | Requirements Generated | Criteria Generated |
+|---|---|---|---|
+| "build me a sales dashboard" | 6 (no metrics, no design, no data, no interactivity, no tech stack, no quality targets) | 4 KPIs, 3 chart types, responsive layout, color palette, Chart.js, sample data | 7 testable |
+| "write a user registration API" | 8 (no framework, no fields, no validation rules, no status codes, no persistence, no hashing, no API spec, no docs) | FastAPI, bcrypt, Pydantic, 10 specific requirements including testability | 10 testable |
+| "analyze CSV and create a report" | 6 (vague "analyze", vague "report", conflicting output format, no data context, no error handling, no audience) | 4-section report structure, error handling, type hints, runnable script | 6 testable |
+
+### Comparison: raw vs iterate vs enhance
+
+| Approach | What it does with "build me a dashboard" |
+|----------|----------------------------------------|
+| **Raw** (no skill) | Guesses what you want, builds something — 608 lines, rich but may miss your intent |
+| **Iterate** | Executes, self-evaluates, passes itself on iteration 1 — same as raw with overhead |
+| **Enhance** | Identifies 6 gaps, generates 7 testable criteria, asks for confirmation before building |
+
+**Enhance addresses the root cause** (underspecified input) rather than the symptom (imperfect output).
+
+### Limitation found
+
+The `/enhance` skill requires interactive confirmation — it won't proceed in non-interactive (`-p`) mode. This is by design (user should approve the enhanced prompt), but it means the full execute+verify flow can only be tested interactively.
+
 ## References
 
 1. Yang, C. et al. (2025). "What Prompts Don't Say: Understanding and Managing Underspecification in LLM Prompts." [arXiv:2505.13360](https://arxiv.org/abs/2505.13360)
