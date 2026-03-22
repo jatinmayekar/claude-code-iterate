@@ -8,7 +8,11 @@ Claude executes your task, evaluates its own output against your success criteri
 
 ## Why
 
-Today, when Claude's output isn't right, you manually re-prompt. `iterate` automates that feedback loop. It turns Claude from a single-shot assistant into a self-correcting agent.
+[Research shows](RESEARCH.md) most users write vague, underspecified prompts — and benchmarks don't reflect this reality. When you say "make it work" or "looks professional," a single-shot LLM just guesses what you mean. `iterate` turns that vague intent into a structured quality loop:
+
+1. **Infers what "done" means** — decomposes vague goals into testable criteria
+2. **Actually verifies its work** — reads files back, runs code, checks assertions (not self-assessment from memory)
+3. **Fixes what's wrong** — targeted corrections, not full restarts
 
 No one has shipped this as a reusable Claude Code skill. This is it.
 

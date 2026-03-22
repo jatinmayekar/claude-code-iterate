@@ -22,7 +22,7 @@ Parse `$ARGUMENTS` using this format:
 ```
 
 - **Task**: Everything before the first `|` is the task description.
-- **Criteria**: Everything between the first and second `|` is a comma-separated list of success criteria. Each criterion must be independently evaluable.
+- **Criteria**: Everything between the first and second `|` is a comma-separated list of success criteria. Each criterion must be independently evaluable. **If any criterion is too vague to evaluate independently** (e.g., "it should work", "looks professional", "handles errors properly"), decompose it into 2-3 concrete, testable sub-criteria before starting the loop. State the sub-criteria and proceed.
 - **Max iterations**: If a third segment contains `max:<N>`, use N as the iteration limit. Default: **5**.
 
 **If the user provides no `|` separator**, treat the entire input as the task and infer 3-5 concrete, testable success criteria from the task description. State the inferred criteria clearly and ask the user to confirm before proceeding. Do not begin the loop until confirmation is received.

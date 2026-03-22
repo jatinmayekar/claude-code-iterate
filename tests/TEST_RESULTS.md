@@ -469,17 +469,63 @@
 **Issues Found**:
 1. SKILL.md evaluation step too weak — Haiku rubber-stamped overlapping labels and raw numbers as [PASS]
 2. Chart criteria too vague — "data points labeled with values" didn't specify abbreviated format
+3. Vague criteria with `|` get accepted as-is instead of being decomposed into testable sub-criteria
 
 **Fixes Applied**:
 1. Strengthened B — EVALUATE with verification rules: read files back, inspect actual output, don't evaluate from memory
 2. Made criteria more specific in test (e.g., "abbreviated format like 1.8M or 141K not raw numbers")
+3. Added vague-criteria decomposition rule: if a criterion is too vague to evaluate independently, decompose into 2-3 sub-criteria
 
 ---
 
-## Meta Test (Final Verification)
+## Tests 23-27: Vague Prompt Tests (Underspecified Criteria)
 
-```
-/iterate refactor the TEST_RESULTS.md to be cleaner | all test results are present, formatting is consistent, no typos | max:3
-```
+**Why**: Research shows most users write vague prompts. Benchmarks test well-defined tasks that don't reflect real usage. These tests validate iterate's behavior with intentionally underspecified criteria.
 
-**Result**: ___
+**Model**: Haiku (`--model haiku --effort low`)
+
+### Test 23: "it should work"
+**Command**: `/iterate write a web scraper in Python | it should work | max:3`
+
+**Result**: Iterate recognized "it should work" as too vague. Decomposed into 3 testable criteria:
+1. Code is syntactically valid and executable
+2. Scraper successfully retrieves data (HTTP request + content)
+3. Data is extracted and usable (parsed HTML → structured output)
+
+Asked for confirmation before proceeding. **Did NOT rubber-stamp.**
+
+### Test 24: "looks professional"
+**Command**: `/iterate create an HTML dashboard | looks professional | max:3`
+
+**Result**: Accepted "looks professional" as-is. Self-evaluated with detailed evidence (gradient background, card layout, Chart.js, shadows, responsive). Passed 1/3 iterations. **Rubber-stamped with thorough evidence.**
+
+### Test 25: "handles errors properly"
+**Command**: `/iterate write a REST API endpoint for user registration | handles errors properly | max:3`
+
+**Result**: Expanded scope to 4 evaluation points (input validation, duplicate checks, HTTP status codes, syntax validity). Passed 1/3 iterations. **Partially decomposed — better than Test 24.**
+
+### Test 26: "make it insightful"
+**Command**: `/iterate analyze tech_jobs.csv and create a report | make it insightful | max:3`
+
+**Result**: Accepted "make it insightful" as-is but produced genuinely deep analysis (1180% AI/ML growth, market share shifts, Rule of 70 calculations). Passed 1/3. **Rubber-stamped but quality was high.**
+
+### Test 27: Zero Criteria (auto-infer)
+**Command**: `/iterate build a calculator app in Python`
+
+**Result**: No `|` detected. Inferred 5 testable criteria:
+1. File exists at path
+2. Supports basic arithmetic (+, -, *, /)
+3. Executable without errors
+4. Accepts user input
+5. Produces correct results
+
+Asked for confirmation. **Did NOT rubber-stamp. Best behavior.**
+
+### Key Finding: Two Distinct Behaviors
+
+| Scenario | Behavior | Quality |
+|----------|----------|---------|
+| No `|` (Tests 23, 27) | Infers criteria, asks confirmation | Best — proactive requirements discovery |
+| `|` with vague criterion (Tests 24-26) | Accepts as-is, self-evaluates | Weaker — can rubber-stamp subjective criteria |
+
+**Fix applied**: Added vague-criteria decomposition rule to SKILL.md — when a criterion is too vague to independently evaluate, decompose into 2-3 concrete sub-criteria.
