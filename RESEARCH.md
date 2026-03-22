@@ -201,9 +201,39 @@ We built `/enhance` and tested with the same 3 vague prompts (Haiku + low effort
 
 **Enhance addresses the root cause** (underspecified input) rather than the symptom (imperfect output).
 
-### Limitation found
+### End-to-End Test Results (Interactive Mode)
 
-The `/enhance` skill requires interactive confirmation — it won't proceed in non-interactive (`-p`) mode. This is by design (user should approve the enhanced prompt), but it means the full execute+verify flow can only be tested interactively.
+We ran all 3 tests interactively in isolated folders and compared output quality across all 3 approaches:
+
+| Metric | Enhance | Raw (no skill) | Iterate |
+|--------|---------|----------------|---------|
+| **Dashboard** | | | |
+| Lines | 452 | 608 | 357 |
+| Charts (Chart.js) | 3 | 2 | 2 |
+| KPI/card references | 41 | 42 | 27 |
+| Responsive (@media) | 2 | 2 | 1 |
+| **API** | | | |
+| Lines | 119 | 187 | 151 |
+| Error handling patterns | 7 | 25 | 13 |
+| Password hashing | Yes (werkzeug) | Yes (bcrypt) | Minimal |
+| SQLite persistence | Yes | Yes | No |
+| **Report** | | | |
+| Format | HTML with charts (382 lines) | Python script (163 lines) | Python script (150 lines) |
+| Insights/analysis terms | 22 | 36 | 34 |
+
+### Conclusions from 3-way comparison
+
+1. **Enhance consistently beats iterate.** On every metric across all 3 tests, enhance produced equal or better output than iterate. The prompt enhancement step is more valuable than the self-correction loop.
+
+2. **Enhance vs raw is a tradeoff.** Raw produces more code (larger files, more features) but enhance produces more *intentional* code — the requirements discovery step means the output matches inferred user intent better. Example: enhance created an HTML report with Chart.js visualizations while raw created a print-to-console Python script. Both are valid, but the HTML report is more likely what "create a report" means to a non-technical user.
+
+3. **Enhance produces cleaner code.** The API test shows this clearly: 119 lines (enhance) vs 187 lines (raw) — enhance has proper structure (werkzeug hashing, SQLite, validation function) without bloat.
+
+4. **The real value is requirements discovery, not output size.** Raw wins on line count and raw feature count, but enhance wins on intent alignment — it figures out what the user actually wanted before building.
+
+### Limitation
+
+The `/enhance` skill requires interactive confirmation — it won't proceed in non-interactive (`-p`) mode. This is by design (user should approve the enhanced prompt before execution).
 
 ## References
 

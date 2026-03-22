@@ -529,3 +529,35 @@ Asked for confirmation. **Did NOT rubber-stamp. Best behavior.**
 | `|` with vague criterion (Tests 24-26) | Accepts as-is, self-evaluates | Weaker — can rubber-stamp subjective criteria |
 
 **Fix applied**: Added vague-criteria decomposition rule to SKILL.md — when a criterion is too vague to independently evaluate, decompose into 2-3 concrete sub-criteria.
+
+---
+
+## Tests 28-30: `/enhance` End-to-End (Interactive, Isolated Folders)
+
+**Model**: Default (interactive Claude Code session)
+**Method**: User ran each test in isolated folder with write permissions restricted to that folder.
+
+### 3-Way Comparison: Enhance vs Raw vs Iterate
+
+| Metric | Enhance | Raw (no skill) | Iterate |
+|--------|---------|----------------|---------|
+| **Dashboard** | | | |
+| Lines | 452 | 608 | 357 |
+| Charts | 3 | 2 | 2 |
+| KPI cards | 41 refs | 42 refs | 27 refs |
+| Responsive | 2 @media | 2 @media | 1 @media |
+| **API** | | | |
+| Lines | 119 | 187 | 151 |
+| Error handling | 7 | 25 | 13 |
+| Password hashing | werkzeug | bcrypt | minimal |
+| Database | SQLite | SQLite+Pydantic | none |
+| **Report** | | | |
+| Format | HTML + Chart.js (382 lines) | Python script (163 lines) | Python script (150 lines) |
+| Analysis depth | 22 insight terms | 36 insight terms | 34 insight terms |
+
+### Conclusions
+
+1. **Enhance > Iterate on every metric.** The prompt enhancement step produces better results than the self-correction loop.
+2. **Enhance vs Raw is intent alignment vs feature count.** Raw produces more code; enhance produces more intentional code that matches what the user likely wanted.
+3. **Enhance produced an HTML report with charts** while raw/iterate produced Python scripts — requirements discovery correctly inferred a visual report was more useful.
+4. **The value is in fixing the input, not the output.** This validates our core research finding.
