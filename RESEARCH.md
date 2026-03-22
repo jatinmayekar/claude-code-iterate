@@ -139,6 +139,27 @@ Prompt optimization tools exist but none are packaged as Claude Code skills:
 
 None of these are Claude Code skills. Nobody has packaged prompt enhancement + requirements discovery + verification enforcement into a single reusable skill that works inside the Claude Code workflow.
 
+### What exists inside Claude Code (verified March 2026)
+
+| Tool | What it does | Prompt enhancement? |
+|------|-------------|-------------------|
+| `/simplify` (built-in) | Code cleanup: reuse, quality, efficiency review | No — code only |
+| `/review` (built-in) | Code review | No |
+| `/batch`, `/loop`, `/debug` (built-in) | Execution utilities | No |
+| Anthropic Prompt Generator | Metaprompt in Console, rewrites prompts | Yes — but web-only, not a skill |
+| Anthropic Prompt Library | 50+ templates | Copy-paste, not automated |
+| `/common-ground` ([jeffallan](https://github.com/jeffallan/claude-skills)) | Surfaces hidden assumptions | Closest — but limited scope |
+| Context Engineering Kit ([NeoLabHQ](https://github.com/NeoLabHQ/context-engineering-kit)) | Context patterns | Context, not prompt rewriting |
+| 340+ community plugins | Various | None do prompt enhancement |
+
+### The gap
+
+**No Claude Code skill exists that takes a vague user prompt and:**
+1. Rewrites it using prompt engineering best practices (chain-of-thought, specificity, structured output)
+2. Discovers missing requirements (proactive requirements discovery per Yang et al.)
+3. Adds verification criteria automatically
+4. Enforces checks on output quality
+
 ### Proposed direction
 
 Instead of:
